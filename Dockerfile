@@ -16,6 +16,11 @@ RUN set -xe \
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
     && echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" >> /etc/apt/sources.list \
     && DEBIAN_FRONTEND=noninteractive apt-get update -q \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs npm s3cmd mono-runtime \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs npm s3cmd mono-runtime cron wget \
     && npm install marked -g \
+    && wget https://github.com/krallin/tini/releases/download/v0.18.0/tini -O /sbin/tini \
+    && chmod +x /sbin/tini \
     && rm -r /var/lib/apt/lists/*
+
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["/usr/sbin/cron", "-f", "-L", "15"]
