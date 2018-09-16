@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ln -sf /var/run/rsyslog/dev/log /dev/log
+
+/usr/sbin/cron -f -L 15

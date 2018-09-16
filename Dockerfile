@@ -22,5 +22,10 @@ RUN set -xe \
     && chmod +x /sbin/tini \
     && rm -r /var/lib/apt/lists/*
 
+COPY rootfs/ /
+
+RUN set -xe \
+    && chmod +x /sbin/start-cron
+
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/usr/sbin/cron", "-f", "-L", "15"]
+CMD ["/sbin/start-cron"]
